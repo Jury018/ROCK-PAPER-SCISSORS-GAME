@@ -1,0 +1,222 @@
+/* Global Styles for Homepage */
+body {
+    font-family: 'Times New Roman', sans-serif;
+    color: #2e4a3b; /* Deep green for text */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative; /* Ensure proper stacking of elements */
+}
+
+/* Video Background */
+.video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Ensures video stays behind content */
+}
+
+video {
+    object-fit: cover; /* Make sure the video covers the full screen */
+    width: 100%;
+    height: 100%;
+}
+
+/* Header Section */
+.game-header {
+    text-align: center;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 6px rgba(46, 74, 59, 0.6);
+}
+
+/* Game Title */
+.game-title {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 4.5rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #eaffff;
+    text-shadow: 0px 0px 12px rgba(139, 195, 74, 0.8); 
+}
+
+.game-description {
+    font-size: 1.5rem;
+    color: #ffffff;
+    font-style: italic;
+}
+
+/* Buttons */
+button {
+    font-family: 'Times New Roman', serif;
+    background-color: #88c488; /* Soft green for buttons */
+    color: #000000; /* Dark green text */
+    padding: 15px 30px;
+    border: 2px solid #4a7c59; 
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    margin: 15px;
+    box-shadow: 0 6px 10px rgba(72, 128, 90, 0.4); /* Subtle shadow for depth */
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+button:hover {
+    background-color: #6ebd74; /* Brighter green on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(72, 128, 90, 0.6);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Back Button */
+#back-button {
+    font-family: 'MedievalSharp', cursive;
+    background-color: #78ab78; /* Green for the back button */
+    color: #fff;
+    padding: 10px 20px;
+    border: 2px solid #4a7c59; /* Darker green border */
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    box-shadow: 0 5px 10px rgba(72, 128, 90, 0.5);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+#back-button:hover {
+    background-color: #6ebd74;
+    transform: translateY(-5px);
+    box-shadow: 0 7px 12px rgba(72, 128, 90, 0.7);
+}
+
+/* Footer Styles */
+footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #2e4a3b;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+footer a {
+    color: #4a7c59;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #6ebd74;
+}
+
+/* CSS for Music Toggle Button */
+.music-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+#toggleMusicButton {
+    background-color: #78ab78;
+    color: #fff;
+    font-family: 'MedievalSharp', cursive;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 0 5px 10px rgba(72, 128, 90, 0.4);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+#toggleMusicButton:hover {
+    background-color: #6ebd74;
+    transform: scale(1.1);
+    box-shadow: 0 7px 12px rgba(72, 128, 90, 0.6);
+}
+
+/* Add fade-in animation for elements */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.music-toggle, .game-header, .button-container button, #back-button {
+    animation: fadeIn 1.5s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .game-title {
+        font-size: 3rem;
+    }
+
+    .game-description {
+        font-size: 1.2rem;
+    }
+
+    button {
+        font-size: 1.2rem;
+        padding: 12px 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-title {
+        font-size: 2.5rem;
+    }
+
+    .game-description {
+        font-size: 1rem;
+    }
+
+    .button-container {
+        flex-direction: column;
+    }
+
+    button {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-title {
+        font-size: 2rem;
+    }
+
+    .game-description {
+        font-size: 0.9rem;
+    }
+
+    button {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+}
