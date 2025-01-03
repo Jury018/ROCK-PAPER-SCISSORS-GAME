@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Hand of Fate - Choose your destiny by selecting between Classic and Adventure game modes. Immerse yourself in this thrilling experience!">
+  <title>HAND OF FATE</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/scrollreveal"></script>
+</head>
+<body>
+
+  <!-- Video Background -->
+  <div class="video-background">
+    <video autoplay muted loop id="bgVideo">
+      <source src="video/bg.mp4" type="video/mp4">
+      Your browser does not support the video element.
+    </video>
+  </div>
+
+  <!-- Music Toggle Button -->
+  <div class="music-toggle">
+    <button id="toggleMusicButton" aria-label="Toggle background music">🔊 Music On</button>
+  </div>
+
+  <!-- Game Title -->
+  <header class="game-header reveal">
+    <h1 class="game-title">THE HAND OF FATE</h1>
+    <p class="game-description">Embark on a thrilling choice. Choose your mode!</p>
+  </header>
+
+  <!-- Main Content -->
+  <main class="game-content">
+    <div class="button-container">
+      <button class="game-button reveal" id="classicButton">Classic Mode</button>
+      <button class="game-button reveal" id="adventureButton">Adventure Mode</button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>MINIGAME by BONFIRE</p>
+  </footer>
+
+  <audio id="bgMusic">
+    <source src="sfx/bg.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
