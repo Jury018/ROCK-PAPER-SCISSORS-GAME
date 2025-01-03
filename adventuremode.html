@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE HAND OF FATE - Adventure Mode</title>
+    <link rel="stylesheet" href="pagestyle.css">
+    <link rel="stylesheet" href="adventure.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Music -->
+    <audio id="bg-music" loop>
+        <source src="sfx/bg.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <!-- Music Controls -->
+    <div id="music-controls">
+        <button id="music-button" title="Toggle Music">
+            <i id="music-icon" class="fa-solid fa-volume-up"></i>
+            <span>Music</span>
+        </button>
+    </div>
+
+    <!-- Sound Effects -->
+    <audio id="choose-sound">
+        <source src="sfx/choose.mp3" type="audio/mp3">
+    </audio>
+    <audio id="win-sound">
+        <source src="sfx/win.mp3" type="audio/mp3">
+    </audio>
+    <audio id="lose-sound">
+        <source src="sfx/lose.mp3" type="audio/mp3">
+    </audio>
+    <audio id="tie-sound">
+        <source src="sfx/tie.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Game Container -->
+    <div id="gametitle">
+    <a href="index.html" id="back-to-homepage">Back to Homepage</a>
+</div>
+    
+
+    <h1>Adventure Mode</h1>
+
+    <!-- Scoreboard -->
+    <div id="scoreboard">
+        <p>Wins: <span id="wins">0</span></p>
+        <p>Losses: <span id="loses">0</span></p>
+        <p>Ties: <span id="ties">0</span></p>
+    </div>
+    <!-- Result Section -->
+    <div id="result"></div>
+
+    <!-- Round Timer -->
+    <div id="round-timer"></div>
+
+    <!-- Player Choices -->
+    <div id="player-choices">
+        <img src="img/rock1.jpg" alt="Rock" data-choice="rock">
+        <img src="img/paper1.jpg" alt="Paper" data-choice="paper">
+        <img src="img/scissors1.jpg" alt="Scissors" data-choice="scissors">
+    </div>
+
+    <!-- Chat Bubble -->
+    <div id="chat-container">
+        <div id="chat-bubble" class="chat-bubble"></div>
+    </div>
+
+    <!-- Computer Choice -->
+    <div id="computer-choice">
+        <img src="img/bot.jpg" alt="Computer Choice" id="computer-choice-image">
+    </div>
+    
+
+    <!-- Result Section -->
+    <div id="result"></div>
+
+    <!-- Game Info -->
+    <div id="game-info">
+        <div id="buttons-container">
+            <button id="history-button" title="View Game History">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>History</span>
+            </button>
+            <button id="reset-button" title="Reset Score">
+                <i class="fa-solid fa-rotate-right"></i>
+                <span>Reset</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Game History -->
+    <div id="game-history" style="display: none;">
+    <h2>Game History</h2>
+    <div id="statistics">
+        <h3>Win Percentage</h3>
+        <canvas id="win-chart" width="200" height="200"></canvas>
+        <p>Total Rounds Played: <span id="total-rounds">0</span></p>
+    </div>
+    <ul id="history-list"></ul>
+</div>
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="adventure.js"></script>
+</body>
+</html>
