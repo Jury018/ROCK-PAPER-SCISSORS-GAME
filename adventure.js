@@ -56,7 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   closeButton.addEventListener('click', closeModal);
   window.addEventListener('click', (event) => {
-    if (event.target === modal) {
+    if (evenat.target === modal) {
       closeModal();
     }
   });
@@ -68,8 +68,11 @@ window.addEventListener('DOMContentLoaded', () => {
     alert(`Level Up! Now you're on Level ${currentLevel}. The game is getting harder!`);
     resetRound(); // Reset score and history when level is increased
     updateScoreboard(); // Ensure the scoreboard updates correctly
+    updateLevelDisplay(); // Update the level display
+    saveProgress(); // Save progress to localStorage after level change
   });
 
+  
   restartLevelButton.addEventListener('click', () => {
     closeModal();
     resetRound(); // Reset score and history when restarting the level
@@ -108,6 +111,7 @@ window.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           showModal("You win the game! Proceed to the next level.");
           isPlayerChoiceAllowed = true; // Re-enable clicks after modal
+          updateLevelDisplay(); // Update the level display
         }, 1000);
       } else if (computerScore === 10) {
         setTimeout(() => {
@@ -128,22 +132,26 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   // Reset the game after a win or loss
-function resetGame() {
-  playerScore = 0;
-  computerScore = 0;
-  ties = 0;
-  totalRounds = 0;
-  currentLevel = 1;
-  levelDifficulty = 3;
-  updateScoreboard();
-  historyList.innerHTML = ''; // Clear history
-  winChart.data.datasets[0].data = [0, 0, 0];
-  winChart.update();
-  clearInterval(roundTimer); // Clear the timer
-  roundTimerElement.textContent = ''; // Reset the timer display
-}
+  function resetGame() {
+    playerScore = 0;
+    computerScore = 0;
+    ties = 0;
+    totalRounds = 0;
+    currentLevel = 1; // Reset current level
+    levelDifficulty = 3; // Reset level difficulty
+    updateScoreboard();
+    historyList.innerHTML = ''; // Clear history
+    winChart.data.datasets[0].data = [0, 0, 0];
+    winChart.update();
+    clearInterval(roundTimer); // Clear the timer
+    roundTimerElement.textContent = ''; // Reset the timer display
+    clearProgress(); // Clear progress from localStorage
+    saveProgress(); // Save the reset progress to localStorage
+    updateLevelDisplay(); // Update the level display
+  }
+  
 
-// Reset score and history after level change
+// Ensure the round reset does not reset the current level and difficulty
 function resetRound() {
   playerScore = 0;
   computerScore = 0;
@@ -155,6 +163,8 @@ function resetRound() {
   winChart.update();
   clearInterval(roundTimer); // Clear the timer
   roundTimerElement.textContent = ''; // Reset the timer display
+  // Do not reset currentLevel and levelDifficulty here
+  saveProgress(); // Save progress to localStorage
 }
 
   // Show the history of the game
@@ -269,6 +279,7 @@ function resetRound() {
       result = "You lose!";
       playSound(loseSound);
     }
+    saveProgress(); // Save progress to localStorage after each round
     return result;
   }
 
@@ -284,6 +295,78 @@ function resetRound() {
     historyItem.textContent = `Round ${totalRounds}: You chose ${playerSelection}, Computer chose ${computerSelection} - ${result}`;
     historyList.appendChild(historyItem);
   }
+
+  const currentLevelSpan = document.getElementById('current-level');
+
+function updateLevelDisplay() {
+  currentLevelSpan.textContent = currentLevel;
+}
+
+// Call this function whenever the level changes
+nextLevelButton.addEventListener('click', () => {
+  closeModal();
+  currentLevel++;
+  levelDifficulty++;
+  alert(`Level Up! Now you're on Level ${currentLevel}. The game is getting harder!`);
+  resetRound(); // Reset score and history when level is increased
+  updateScoreboard(); // Ensure the scoreboard updates correctly
+  updateLevelDisplay(); // Update the level display
+});
+
+restartLevelButton.addEventListener('click', () => {
+  closeModal();
+  resetRound(); // Reset score and history when restarting the level
+  updateScoreboard(); // Ensure the scoreboard updates correctly
+  clearInterval(roundTimer); // Clear the timer
+  roundTimerElement.textContent = ''; // Reset the timer display
+  updateLevelDisplay(); // Update the level display
+});
+
+// Initial call to set the level display when the page loads
+updateLevelDisplay();
+
+function handlePlayerChoice(playerSelection) {
+  if (!isPlayerChoiceAllowed) return; // Prevent multiple clicks
+  isPlayerChoiceAllowed = false; // Disable further clicks
+
+  clearTimeout(debounceTimeout); // Clear any existing debounce timeout
+  debounceTimeout = setTimeout(() => {
+    isPlayerChoiceAllowed = true; // Re-enable clicks after debounce period
+  }, 1000); // Set debounce period to 1 second
+
+  const computerSelection = getComputerChoice(playerSelection);
+  startRoundTimer();
+
+  // Show the bot image before revealing the bot's choice
+  computerChoiceImage.src = 'img/bot.jpg';
+
+  setTimeout(() => {
+    computerChoiceImage.src = `img/${computerSelection}2.jpg`;
+    const result = playRound(playerSelection, computerSelection);
+    resultDiv.textContent = result;
+    updateScoreboard();
+    updateHistory(result, playerSelection, computerSelection);
+    showOpponentInsight(result, playerSelection, computerSelection);
+    winChart.data.datasets[0].data = [playerScore, computerScore, ties];
+    winChart.update();
+
+    // Check if the game has reached 10 wins or losses and display victory or defeat
+    if (playerScore === 10) {
+      setTimeout(() => {
+        showModal("You win the game! Proceed to the next level.");
+        isPlayerChoiceAllowed = true; // Re-enable clicks after modal
+        updateLevelDisplay(); // Update the level display
+      }, 1000);
+    } else if (computerScore === 10) {
+      setTimeout(() => {
+        showModal("You lose! Restart the current level.", false);
+        isPlayerChoiceAllowed = true; // Re-enable clicks after modal
+      }, 1000);
+    } else {
+      isPlayerChoiceAllowed = true; // Re-enable clicks after round
+    }
+  }, 1000);
+}
 
   function showOpponentInsight(result, playerSelection, computerSelection) {
     const responses = {
@@ -321,7 +404,7 @@ function resetRound() {
         `Pantay tayo! Pareho tayong ${playerSelection}!`
       ]
     };
-
+  
     let insightText = '';
     if (result === "You win!") {
       insightText = responses.win[Math.floor(Math.random() * responses.win.length)];
@@ -330,14 +413,14 @@ function resetRound() {
     } else {
       insightText = responses.tie[Math.floor(Math.random() * responses.tie.length)];
     }
-
+  
     chatBubble.textContent = `Opponent: "${insightText}"`;
     chatBubble.style.display = 'block';
     chatBubble.classList.add('fade-in');
     setTimeout(() => chatBubble.classList.remove('fade-in'), 500);
-
-    const delayTime = insightText.length * 150;
-
+  
+    const delayTime = Math.max(insightText.length * 150, 3000); // Ensure a minimum display time of 3 seconds
+  
     setTimeout(() => {
       chatBubble.style.display = 'none';
     }, delayTime);
@@ -358,10 +441,52 @@ function resetRound() {
       } else {
         clearInterval(roundTimer);
         roundTimerElement.textContent = 'Round Over!';
-        computerScore++; // Count as a loss for the player
-        updateScoreboard();
-        showModal("Time's up! You lose this round.", false);
+        if (playerScore < 10 && computerScore < 10) { // Check if the game is not already won or lost
+          computerScore++; // Count as a loss for the player
+          updateScoreboard();
+          showModal("Time's up! You lose this round.", false);
+        }
       }
     }, 1000);
   }
+
+  function saveProgress() {
+    localStorage.setItem('playerScore', playerScore);
+    localStorage.setItem('computerScore', computerScore);
+    localStorage.setItem('ties', ties);
+    localStorage.setItem('totalRounds', totalRounds);
+    localStorage.setItem('currentLevel', currentLevel);
+    localStorage.setItem('levelDifficulty', levelDifficulty);
+  }
+
+  function loadProgress() {
+    const savedPlayerScore = localStorage.getItem('playerScore');
+    const savedComputerScore = localStorage.getItem('computerScore');
+    const savedTies = localStorage.getItem('ties');
+    const savedTotalRounds = localStorage.getItem('totalRounds');
+    const savedCurrentLevel = localStorage.getItem('currentLevel');
+    const savedLevelDifficulty = localStorage.getItem('levelDifficulty');
+  
+    if (savedPlayerScore !== null) playerScore = parseInt(savedPlayerScore, 10);
+    if (savedComputerScore !== null) computerScore = parseInt(savedComputerScore, 10);
+    if (savedTies !== null) ties = parseInt(savedTies, 10);
+    if (savedTotalRounds !== null) totalRounds = parseInt(savedTotalRounds, 10);
+    if (savedCurrentLevel !== null) currentLevel = parseInt(savedCurrentLevel, 10);
+    if (savedLevelDifficulty !== null) levelDifficulty = parseInt(savedLevelDifficulty, 10);
+  
+    updateScoreboard();
+    updateLevelDisplay(); // Ensure the level display is updated
+  }
+
+
+  function clearProgress() {
+    localStorage.removeItem('playerScore');
+    localStorage.removeItem('computerScore');
+    localStorage.removeItem('ties');
+    localStorage.removeItem('totalRounds');
+    localStorage.removeItem('currentLevel');
+    localStorage.removeItem('levelDifficulty');
+  }
+
+  loadProgress(); // Load progress when the page loads
 });
