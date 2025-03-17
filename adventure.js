@@ -5,8 +5,8 @@ window.addEventListener('DOMContentLoaded', () => {
   let ties = 0;
   let totalRounds = 0;
   let currentLevel = 1; // Track the current level
-  let levelDifficulty = 1; // Difficulty increases with each level
-  let roundTimer;
+  let levelDifficulty = 3; // Difficulty increases with each level
+  let roundTimer = 10;
 
   const playerChoiceImages = document.querySelectorAll('#player-choices img');
   const resultDiv = document.getElementById('result');
@@ -143,7 +143,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function showOpponentInsight(result, playerSelection, computerSelection) {
     let insightText = '';
-    let delayTime = 5000;
+    let delayTime = 6000;
 
     const responses = {
       win: [
@@ -176,7 +176,7 @@ window.addEventListener('DOMContentLoaded', () => {
     chatBubble.classList.add('fade-in');
     setTimeout(() => chatBubble.classList.remove('fade-in'), 500);
 
-    delayTime = insightText.length * 90;
+    delayTime = insightText.length * 80;
 
     setTimeout(() => {
       chatBubble.style.display = 'none';
@@ -220,7 +220,7 @@ window.addEventListener('DOMContentLoaded', () => {
           showOpponentInsight(result, playerSelection, computerSelection);
           winChart.data.datasets[0].data = [playerScore, computerScore, ties];
           winChart.update();
-        }, 500);
+        }, 1000);
       }, 1000);
       
       // Check if the game has reached 10 wins and display victory or defeat
@@ -253,7 +253,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ties = 0;
     totalRounds = 0;
     currentLevel = 1;
-    levelDifficulty = 1;
+    levelDifficulty = 10;
     updateScoreboard();
     updateHistory('Game reset after victory/defeat', '', '');
     winChart.data.datasets[0].data = [0, 0, 0];
