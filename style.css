@@ -1,4 +1,4 @@
-/* Global Styles for Homepage */
+/* Global Styles */
 body {
     font-family: 'Times New Roman', sans-serif;
     color: #2e4a3b; /* Deep green for text */
@@ -11,24 +11,43 @@ body {
     overflow: hidden;
     position: relative; /* Ensure proper stacking of elements */
 }
+/* Add a fallback background color */
+body {
+    background-color: #000; /* Match with video theme */
+}
 
-/* Video Background */
+/* Video Background - Fullscreen & Responsive */
 .video-background {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Ensures video stays behind content */
+    overflow: hidden;
+    z-index: -1;
+    background: #000; /* Same as body to prevent white flash */
 }
 
-video {
-    object-fit: cover; /* Make sure the video covers the full screen */
+/* Ensures video fills the entire screen */
+.video-background video {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
-/* Header Section */
+.video-background video {
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
+/* Header */
 .game-header {
     text-align: center;
     margin-bottom: 40px;
@@ -38,13 +57,14 @@ video {
 /* Game Title */
 .game-title {
     font-family: 'MedievalSharp', cursive;
-    font-size: 4.5rem;
+    font-size: 4rem;
     text-transform: uppercase;
     letter-spacing: 3px;
     color: #eaffff;
-    text-shadow: 0px 0px 12px rgba(139, 195, 74, 0.8); 
+    text-shadow: 0px 0px 12px rgba(139, 195, 74, 0.8);
 }
 
+/* Description */
 .game-description {
     font-size: 1.5rem;
     color: #ffffff;
@@ -54,21 +74,21 @@ video {
 /* Buttons */
 button {
     font-family: 'Times New Roman', serif;
-    background-color: #88c488; /* Soft green for buttons */
-    color: #000000; /* Dark green text */
+    background-color: #88c488;
+    color: #000000;
     padding: 15px 30px;
-    border: 2px solid #4a7c59; 
+    border: 2px solid #4a7c59;
     border-radius: 10px;
     cursor: pointer;
     font-size: 1.5rem;
     margin: 15px;
-    box-shadow: 0 6px 10px rgba(72, 128, 90, 0.4); /* Subtle shadow for depth */
+    box-shadow: 0 6px 10px rgba(72, 128, 90, 0.4);
     transition: all 0.3s ease;
     outline: none;
 }
 
 button:hover {
-    background-color: #6ebd74; /* Brighter green on hover */
+    background-color: #6ebd74;
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(72, 128, 90, 0.6);
 }
@@ -82,31 +102,36 @@ button:active {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Classic & Adventure Mode Buttons */
+.classic-mode, .adventure-mode {
+    flex: 1;
+    max-width: 300px;
 }
 
 /* Back Button */
 #back-button {
     font-family: 'MedievalSharp', cursive;
-    background-color: #78ab78; /* Green for the back button */
+    background-color: #78ab78;
     color: #fff;
     padding: 10px 20px;
-    border: 2px solid #4a7c59; /* Darker green border */
+    border: 2px solid #4a7c59;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1.2rem;
     box-shadow: 0 5px 10px rgba(72, 128, 90, 0.5);
     transition: all 0.3s ease;
-    margin-bottom: 20px;
 }
 
 #back-button:hover {
     background-color: #6ebd74;
     transform: translateY(-5px);
-    box-shadow: 0 7px 12px rgba(72, 128, 90, 0.7);
 }
 
-/* Footer Styles */
+/* Footer */
 footer {
     position: absolute;
     bottom: 20px;
@@ -115,7 +140,6 @@ footer {
     font-size: 1.2rem;
     color: #2e4a3b;
     opacity: 0.8;
-    letter-spacing: 1px;
 }
 
 footer a {
@@ -127,7 +151,7 @@ footer a:hover {
     color: #6ebd74;
 }
 
-/* CSS for Music Toggle Button */
+/* Music Toggle Button */
 .music-toggle {
     position: absolute;
     top: 20px;
@@ -152,10 +176,9 @@ footer a:hover {
 #toggleMusicButton:hover {
     background-color: #6ebd74;
     transform: scale(1.1);
-    box-shadow: 0 7px 12px rgba(72, 128, 90, 0.6);
 }
 
-/* Add fade-in animation for elements */
+/* Fade-in Animation */
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -185,6 +208,11 @@ footer a:hover {
         font-size: 1.2rem;
         padding: 12px 25px;
     }
+
+    /* Move buttons below each other */
+    .button-container {
+        flex-direction: column;
+    }
 }
 
 @media (max-width: 768px) {
@@ -196,15 +224,26 @@ footer a:hover {
         font-size: 1rem;
     }
 
-    .button-container {
-        flex-direction: column;
-    }
-
     button {
         font-size: 1rem;
         padding: 10px 20px;
     }
+
+    /* Stack buttons */
+    .classic-mode, .adventure-mode {
+        max-width: 250px;
+    }
+
+   /* Move music button to bottom on small screens */
+@media (max-width: 768px) {
+    .music-toggle {
+        top: 20px; /* Keep it at the original top position */
+        right: 20px; /* Keep it at the original right position */
+        left: auto; /* Ensure it doesn't shift to the left */
+        transform: none; /* Remove unwanted translation */
+    }
 }
+
 
 @media (max-width: 480px) {
     .game-title {
@@ -218,5 +257,15 @@ footer a:hover {
     button {
         font-size: 0.9rem;
         padding: 8px 15px;
+    }
+
+    /* Make buttons full width */
+    .classic-mode, .adventure-mode {
+        max-width: 100%;
+    }
+
+    /* Center footer text */
+    footer {
+        font-size: 1rem;
     }
 }
